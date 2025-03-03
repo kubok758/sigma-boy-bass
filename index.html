@@ -3,30 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Кнопка со звуком</title>
+    <title>Нажми, чтобы включить звук</title>
     <style>
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
-        }
-        button {
-            font-size: 24px;
-            padding: 1000px 1000px;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
             cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <button onclick="playSound()">Нажми</button>
-    <audio id="myAudio" src="sound.mp3"></audio>
+    <h1 id="text">Нажми на экран, чтобы включить звук</h1>
+    <audio id="myAudio" src="sound.mp3" loop></audio>
 
     <script>
-        function playSound() {
-            document.getElementById('myAudio').play();
+        function playAudio() {
+            let audio = document.getElementById("myAudio");
+
+            // Попытка включить звук
+            audio.play().then(() => {
+                console.log("Звук запущен!");
+                document.getElementById("text").remove(); // Убираем текст после клика
+                document.body.style.cursor = "default"; // Убираем указатель клика
+            }).catch(error => {
+                console.log("Ошибка воспроизведения:", error);
+            });
+
+            // После первого клика удаляем обработчик
+            document.body.removeEventListener("click", playAudio);
         }
+
+        // Ждем первого клика пользователя
+        document.body.addEventListener("click", playAudio);
     </script>
 </body>
 </html>
